@@ -1,4 +1,4 @@
-AI Resume Screening Sytem
+AI Resume Screening System
 This project screens resumes using AI/ML to shortlist candidates based on skills and relevance.
 
 Tech Stack
