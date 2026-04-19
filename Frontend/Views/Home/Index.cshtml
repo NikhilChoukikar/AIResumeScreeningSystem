@@ -1,0 +1,115 @@
+﻿@model ResumeViewModel
+
+<div class="row justify-content-center">
+    <div class="col-md-8">
+
+        <!-- Upload Card -->
+        <div class="card shadow-lg p-4">
+
+            <h2 class="text-center mb-4">📄 Resume Screening System</h2>
+
+            <form method="post" enctype="multipart/form-data">
+
+                <div class="mb-3">
+                    <label class="form-label">Upload Resume (PDF)</label>
+                    <input type="file" name="ResumeFile" class="form-control" required />
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Job Description</label>
+                    <textarea name="JobDescription" class="form-control" rows="5"
+                              placeholder="Enter job description..." required></textarea>
+                </div>
+
+                <button type="submit" class="btn btn-primary w-100">
+                    🔍 Analyze Resume
+                </button>
+
+            </form>
+
+        </div>
+
+        <!-- RESULT SECTION -->
+        @if (Model.IsProcessed)
+        {
+            <div class="card shadow mt-4 p-4">
+
+                <h4 class="mb-3">📊 Result</h4>
+
+                <!-- Score -->
+                <h5>
+                    Match Score:
+                    <span class="fw-bold text-primary">
+                        @((Model.Score * 100).ToString("F2"))%
+                    </span>
+                </h5>
+
+                <!-- Score Indicator -->
+                @if (Model.Score > 0.7)
+                {
+                    <div class="alert alert-success mt-2">✅ Strong Match</div>
+                }
+                else if (Model.Score > 0.4)
+                {
+                    <div class="alert alert-warning mt-2">⚠️ Moderate Match</div>
+                }
+                else
+                {
+                    <div class="alert alert-danger mt-2">❌ Weak Match</div>
+                }
+
+                <hr />
+
+                <!-- 🔥 SKILLS SECTION -->
+                <div class="row">
+
+                    <!-- Matched Skills -->
+                    <div class="col-md-6">
+                        <h5>✅ Matched Skills</h5>
+
+                        @if (Model.MatchedSkills != null && Model.MatchedSkills.Any())
+                        {
+                            @foreach (var skill in Model.MatchedSkills)
+                            {
+                                <span class="badge bg-success me-2 mb-2">@skill</span>
+                            }
+                        }
+                        else
+                        {
+                            <p class="text-muted">No matched skills</p>
+                        }
+                    </div>
+
+                    <!-- Missing Skills -->
+                    <div class="col-md-6">
+                        <h5>❌ Missing Skills</h5>
+
+                        @if (Model.MissingSkills != null && Model.MissingSkills.Any())
+                        {
+                            @foreach (var skill in Model.MissingSkills)
+                            {
+                                <span class="badge bg-danger me-2 mb-2">@skill</span>
+                            }
+                        }
+                        else
+                        {
+                            <p class="text-muted">No missing skills</p>
+                        }
+                    </div>
+
+                </div>
+
+                <hr />
+
+                <!-- Extracted Text -->
+                <h5>📄 Extracted Text From Resume</h5>
+
+                <div class="extracted-box">
+                    @Model.ExtractedText
+                </div>
+
+            </div>
+        }
+
+    </div>
+</div>
